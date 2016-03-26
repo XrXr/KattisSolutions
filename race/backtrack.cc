@@ -15,6 +15,7 @@ int t[MAXT + 2];
 int d[MAXN + 2];
 int cost[MAXN+2][MAXN+2];
 int n, T;
+bool should_sort = true;
 
 int best_point = 0;
 vector<int> best_sol;
@@ -64,13 +65,12 @@ int dist_to_end(const vector<int>& graph, int source) {
     return dist[n+1];
 }
 
-void bt(unordered_set<int> used, int location, int time, int point) {
+void bt(unordered_set<int> used, vector<int> order, int location, int time, int point) {
     if (location == n + 1) {
         if (point > best_point) {
-            vector<int> sorted (used.begin(), used.end());
-            sort(sorted.begin(), sorted.end());
+            if (should_sort) sort(order.begin(), order.end());
             best_point = point;
-            best_sol = sorted;
+            best_sol = order;
         }
         return;
     }
@@ -90,13 +90,14 @@ void bt(unordered_set<int> used, int location, int time, int point) {
         if (nt > T || (d[i] > -1 && nt > d[i])) continue;
         int np = point + p[i];
         used.insert(i);
-        bt(used, i, nt, np);
+        order.push_back(i);
+        bt(used, order, i, nt, np);
         used.erase(i);
+        order.pop_back();
     }
 }
 
-int main() {
-
+int main(int argc, char** argv) {
     cin >> n >> T;
     for (int i =0; i< n; i++)
         cin >> p[i] >> t[i] >> d[i];
@@ -106,6 +107,8 @@ int main() {
         for (int j =0; j< n+2; j++)
             cin >> cost[i][j];
 
+    if (argc > 1) should_sort = false;
+
     d[n] = -1;
     t[n] = 0;
     p[n] = 0;
@@ -113,13 +116,12 @@ int main() {
     p[n+1] = 0;
     t[n+1] = 0;
 
-    unordered_set<int> initial;
-    initial.insert(n);
-    bt(initial, n, 0, 0);
+    bt({n}, {n}, n, 0, 0);
 
     cout << best_point << endl;
+    const int minus = should_sort ? 2 : 0;
     if (best_point > 0) {
-        for (int i = 0; i < best_sol.size() - 2; i++) {
+        for (int i = 0; i < best_sol.size() - minus; i++) {
             cout << best_sol.at(i) + 1;
             if (i != best_sol.size() - 1) cout << ' ';
         }
