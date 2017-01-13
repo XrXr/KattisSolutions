@@ -1,0 +1,21 @@
+define 5 a
+define 6 b
+define 5 c
+eval a = a
+eval a = c
+eval c = a
+eval a < b
+eval b > a
+eval a = b
+eval b = a
+eval a > b
+eval b < a
+eval a = d
+eval d = a
+eval d = d
+eval a < d
+eval d < a
+eval d < d
+eval a > d
+eval d > a
+eval d > d
