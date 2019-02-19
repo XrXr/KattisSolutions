@@ -9,6 +9,6 @@ Here are some key observations:
 Knowing the above, we can rotate the shape based on every edge on the convex and find the minimum width.
 
 
-## Other solution
+## Another solution
 
 Apprently, it is possible to find the [oriented minimum bounding box](https://en.wikipedia.org/wiki/Minimum_bounding_rectangle) of a shape in linear time.
